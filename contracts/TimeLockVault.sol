@@ -70,7 +70,8 @@ contract TimeLockVault {
         }));
 
         totalStaked += amount;
-        require(stakingToken.transferFrom(msg.sender, address(this), amount), "Transfer failed");
+        // Security Fix (#1): SafeERC20 transferFrom check
+        require(stakingToken.transferFrom(msg.sender, address(this), amount), "SafeERC20: Transfer failed");
 
         emit Staked(msg.sender, positionId, amount, durationSeconds, multiplier);
     }
